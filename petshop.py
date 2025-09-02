@@ -55,29 +55,43 @@ def cadastro(): #Validações de nome antes
 
 
 def delete():
-    
-
     if not animais:
         print("Nenhum animal cadastrado")
         menu()
+        return
 
-    mostrar() 
+    print("\nLista de Animais:")
+    for i in range(len(animais)):
+        print(f"{i+1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
     
     while True:
-        delet = input("Digite o nome do animal que deseja deletar ou 'Sair' para voltar: ")
-        if delet.lower() == "sair":
+        print("\nEscolha uma opção:")
+        print("1. Deletar animal")
+        print("2. Sair")
+        opcao = input("Digite o número da opção: ").strip() #strip tira todos os espaços vazios
+
+        if opcao == '1':
+            delet = input("Digite o nome do animal que deseja deletar: ").strip()
+            nomes_animais_lower = [a.lower() for a in animais]
+            if delet.lower() in nomes_animais_lower:
+                index = nomes_animais_lower.index(delet.lower())
+                removed_animal = animais.pop(index)
+                raca.pop(index)
+                tipo.pop(index)
+                print(f"{removed_animal} foi removido com sucesso.")
+                break  # Sai do loop e volta para o menu
+            else:
+                print("Animal não encontrado. Tente novamente.")
+
+        elif opcao == '2':
             menu()
             return
-        if delet in animais:
-            index = animais.index(delet)
-            animais.pop(index)
-            raca.pop(index)
-            tipo.pop(index)
-            print(f"{delet} foi removido com sucesso.")
-            break
+
         else:
-            print("Animal não encontrado. Tente novamente.")
+            print("Opção inválida. Digite 1 ou 2.")
+
     menu()
+
 
 
 def mostrar():
