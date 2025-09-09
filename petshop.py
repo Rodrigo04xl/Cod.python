@@ -28,7 +28,7 @@ def cadastro(): #Validações de nome antes
 
 
     while True:
-        R = input("\nDigite a raça do seu animal: ").strip()
+        R = input("Digite a raça do seu animal: ").strip()
         if not R:
             print("\nEntrada vazia. Digite alguma coisa.")
             continue
@@ -38,7 +38,7 @@ def cadastro(): #Validações de nome antes
         break
 
     while True:
-        T = input("\nDigite o tipo do seu animal: ").strip()
+        T = input("Digite o tipo do seu animal: ").strip()
         if not T:
             print("\nEntrada vazia. Digite alguma coisa.")
             continue
@@ -50,8 +50,13 @@ def cadastro(): #Validações de nome antes
     animais.append(N)
     raca.append(R)                              #adicionam as informações recebidas
     tipo.append(T)
-    print(f"\nSeu novo animal cadastrado é: {N}, da raça: {R}, e do tipo {T}.")
+    print(f"\n\nSeu novo animal cadastrado é: {N}, da raça: {R}, e do tipo {T}.")
     menu()
+
+
+
+
+
 
 
 def delete():
@@ -60,9 +65,7 @@ def delete():
         menu()
         return
 
-    print("\nLista de Animais:")
-    for i in range(len(animais)):
-        print(f"{i+1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
+    açao_mostrar()
     
     while True:
         print("\nEscolha uma opção:")
@@ -94,7 +97,16 @@ def delete():
 
 
 
-def mostrar():
+
+
+
+
+def açao_mostrar():
+    print("\nLista de Animais:")
+    for i in range(len(animais)):
+        print(f"{i+1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
+
+def mostrar_menu():
     print("\nLista de Animais:")
     for i in range(len(animais)):
         print(f"{i+1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
@@ -106,6 +118,49 @@ def mostrar():
 
 
 
+def modificar():
+    if not animais:
+        print("Nenhum animal cadastrado")
+        menu()
+        return
+
+    açao_mostrar()
+    
+    while True:
+        print("\nEscolha uma opção:")
+        print("1. Modificar animal")
+        print("2. Sair")
+        opcao2 = input("Digite o número da opção: ").strip()
+        
+        if opcao2 == '1':
+            modifi = input("Digite o nome do animal que deseja modificar: ").strip()
+            nomes_animais_lower = [a.lower() for a in animais]
+            if modifi.lower() in nomes_animais_lower:
+                index = nomes_animais_lower.index(modifi.lower())
+
+                # Solicita novos dados
+                novo_nome = input("Digite o novo nome do animal: ").strip()
+                nova_raca = input("Digite a nova raça: ").strip()
+                novo_tipo = input("Digite o novo tipo: ").strip()
+
+                # Atualiza nas listas
+                animais[index] = novo_nome
+                raca[index] = nova_raca
+                tipo[index] = novo_tipo
+
+                print(f"\nAnimal modificado com sucesso! Novo cadastro: "
+                      f"{novo_nome}, Raça: {nova_raca}, Tipo: {novo_tipo}")
+                break
+            else:
+                print("Animal não encontrado. Tente novamente.")
+
+        elif opcao2 == '2':
+            menu()
+            return
+        else:
+            print("Opção inválida. Digite 1 ou 2.")
+
+    menu()
 
 
 
@@ -113,12 +168,16 @@ def mostrar():
 
 
 
+def sair():
+    print("\nAté mais!")
 
 
 
 
-#Trocar por match case
-def escolha():      #recebe, verifica e analisa a resposta do usuario.
+
+
+
+def  escolha(): 
 
     try:
         resposta = int(input("Escolha uma opçao 1-5: "))
@@ -131,9 +190,9 @@ def escolha():      #recebe, verifica e analisa a resposta do usuario.
         case 2:
             delete()
         case 3:
-            mostrar()
+            mostrar_menu()
         case 4:
-            Modificar()
+            modificar()
         case 5:
             sair()
         case _:
