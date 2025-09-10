@@ -1,80 +1,95 @@
 #   E:\petshop\petshop.py
-
 animais = []
 raca = []
-tipo = [] 
+tipo = []
+
+# NOTE reordenei as funções para facilitar a leitura do código
+# NOTE aqui temos as funçoes que podem ser reutilizadas em outras partes do código
 
 
-def menu():                                            #mostra o menu e as opções.
+def escolha():
+    try:
+        return int(input("Opção: "))
+    except ValueError:
+        return -1
+
+
+def listar_pets():  # NOTE alterei o nome para algo mais descritivo
+    print("\nLista de Animais:")
+    for i in range(len(animais)):
+        print(
+            f"{i + 1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
+
+
+# NOTE alterei a numeração para facilitar a adição de mais funções caso necessário
+# NOTE removi a chamada da escolha() de dentro do menu() por que na main ela ja é chamada
+def menu():  # mostra o menu e as opções.
     print("\nMenu da pet. Seja bem vindo!")
     print("1. Cadastrar animal.")
     print("2. Deletar animal.")
     print("3. Mostrar animais cadastrados.")
     print("4. Modificar animal.")
-    print("5. Sair.")
-    escolha()
+    print("0. Sair.")
 
 
-def cadastro(): #Validações de nome antes
+# NOTE aqui temos as funções principais do programa
+def cadastro():  # Validações de nome antes
+    # NOTE coloquei nomes de variaveis mais descritivos para facilitar a leitura do código
     while True:
-        N = input("\nDigite o nome do seu animal: ").strip()
-        if not N:
+        nome_pet = input("\nDigite o nome do seu animal: ").strip()
+        if not nome_pet:
             print("\nEntrada vazia. Digite alguma coisa.")
             continue
-        if N.isdigit():
+        if nome_pet.isdigit():
             print("\nNao aceitamos numeros sozinhos, misture com letras")
             continue
         break
 
-
     while True:
-        R = input("Digite a raça do seu animal: ").strip()
-        if not R:
+        raca_pet = input("Digite a raça do seu animal: ").strip()
+        if not raca_pet:
             print("\nEntrada vazia. Digite alguma coisa.")
             continue
-        if R.isdigit():
+        if raca_pet.isdigit():
             print("\nNao aceitamos numeros sozinhos, misture com letras.")
             continue
         break
 
     while True:
-        T = input("Digite o tipo do seu animal: ").strip()
-        if not T:
+        tipo_pet = input("Digite o tipo do seu animal: ").strip()
+        if not tipo_pet:
             print("\nEntrada vazia. Digite alguma coisa.")
             continue
-        if T.isdigit():
+        if tipo_pet.isdigit():
             print("\nNao aceitamos numeros sozinhos, misture com letras.")
             continue
         break
 
-    animais.append(N)
-    raca.append(R)                              #adicionam as informações recebidas
-    tipo.append(T)
-    print(f"\n\nSeu novo animal cadastrado é: {N}, da raça: {R}, e do tipo {T}.")
-    menu()
-
-
-
-
-
+    animais.append(nome_pet)  # adicionam as informações recebidas as listas
+    raca.append(raca_pet)
+    tipo.append(tipo_pet)
+    print(
+        f"\n\nSeu novo animal cadastrado é: {nome_pet}, da raça: {raca_pet}, e do tipo {tipo_pet}."
+    )
 
 
 def delete():
     if not animais:
         print("Nenhum animal cadastrado")
-        menu()
         return
 
-    açao_mostrar()
-    
+    listar_pets()
+
     while True:
         print("\nEscolha uma opção:")
         print("1. Deletar animal")
         print("2. Sair")
-        opcao = input("Digite o número da opção: ").strip() #strip tira todos os espaços vazios
+        # strip tira todos os espaços vazios do começo e do fim da string, exemplo: "  oi  " vira "oi"
+        opcao = escolha()  # NOTE alterei para usar a função escolha() que já trata erros
 
-        if opcao == '1':
-            delet = input("Digite o nome do animal que deseja deletar: ").strip()
+        if opcao == 1:  # NOTE alterei para usar numeros ao invés de strings
+            delet = input(
+                "Digite o nome do animal que deseja deletar: ").strip()
             nomes_animais_lower = [a.lower() for a in animais]
             if delet.lower() in nomes_animais_lower:
                 index = nomes_animais_lower.index(delet.lower())
@@ -86,54 +101,29 @@ def delete():
             else:
                 print("Animal não encontrado. Tente novamente.")
 
-        elif opcao == '2':
-            menu()
+        elif opcao == 2:
             return
 
         else:
             print("Opção inválida. Digite 1 ou 2.")
 
-    menu()
 
-
-
-
-
-
-
-def açao_mostrar():
-    print("\nLista de Animais:")
-    for i in range(len(animais)):
-        print(f"{i+1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
-
-def mostrar_menu():
-    print("\nLista de Animais:")
-    for i in range(len(animais)):
-        print(f"{i+1}. Animal: {animais[i]}, Raça: {raca[i]}, Tipo: {tipo[i]}")
-    menu()
-
-
-
-
-
-
-
-def modificar():
+def modificar():#XXX A modificação de dados não tem as mesmas validações que o cadastro
     if not animais:
         print("Nenhum animal cadastrado")
-        menu()
         return
 
-    açao_mostrar()
-    
+    listar_pets()
+
     while True:
         print("\nEscolha uma opção:")
         print("1. Modificar animal")
         print("2. Sair")
-        opcao2 = input("Digite o número da opção: ").strip()
-        
-        if opcao2 == '1':
-            modifi = input("Digite o nome do animal que deseja modificar: ").strip()
+        opcao = escolha()  # NOTE alterei para usar a função escolha() que já trata erros
+
+        if opcao == 1: # NOTE alterei para usar numeros ao invés de strings
+            modifi = input(
+                "Digite o nome do animal que deseja modificar: ").strip()
             nomes_animais_lower = [a.lower() for a in animais]
             if modifi.lower() in nomes_animais_lower:
                 index = nomes_animais_lower.index(modifi.lower())
@@ -148,56 +138,43 @@ def modificar():
                 raca[index] = nova_raca
                 tipo[index] = novo_tipo
 
-                print(f"\nAnimal modificado com sucesso! Novo cadastro: "
-                      f"{novo_nome}, Raça: {nova_raca}, Tipo: {novo_tipo}")
+                print(
+                    f"\nAnimal modificado com sucesso! Novo cadastro: "
+                    f"{novo_nome}, Raça: {nova_raca}, Tipo: {novo_tipo}"
+                )
                 break
             else:
                 print("Animal não encontrado. Tente novamente.")
 
-        elif opcao2 == '2':
-            menu()
+        elif opcao == 2:
             return
         else:
             print("Opção inválida. Digite 1 ou 2.")
 
-    menu()
+
+def main():
+    while True:  # NOTE com esse loop o programa roda até o usuário escolher sair
+        menu()
+
+        resposta = escolha()
+
+        match resposta:
+            case 1:
+                cadastro()
+            case 2:
+                delete()
+            case 3:
+                listar_pets()
+            case 4:
+                modificar()
+            case 0:  # NOTE alterei para 0 para facilitar a adição de mais funções caso necessário
+                # NOTE aqui pode ser direto a mensagem e o break, nao é necessario criar uma função só pra isso
+                print("\nAté mais!")
+                break
+            case _:
+                print("Digite uma opçao de válida por favor.\n")
 
 
-
-
-
-
-
-def sair():
-    print("\nAté mais!")
-
-
-
-
-
-
-
-def  escolha(): 
-
-    try:
-        resposta = int(input("Escolha uma opçao 1-5: "))
-    except ValueError:
-        resposta = -1
-
-    match resposta:
-        case 1:
-            cadastro()
-        case 2:
-            delete()
-        case 3:
-            mostrar_menu()
-        case 4:
-            modificar()
-        case 5:
-            sair()
-        case _:
-            print("Digite uma opçao de 1-5 por favor.\n")
-            menu()      
-
-
-menu()
+# NOTE com esse comando o programa roda apenas se for o arquivo principal (main)
+if __name__ == "__main__":
+    main()
